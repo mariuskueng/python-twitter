@@ -3427,6 +3427,8 @@ class Api(object):
 
   def GetFavorites(self,
                    user=None,
+                   since_id=None,
+                   max_id=None,
                    page=None):
     '''Return a list of Status objects representing favorited tweets.
     By default, returns the (up to) 20 most recent tweets for the
@@ -3444,6 +3446,13 @@ class Api(object):
 
     if page:
       parameters['page'] = page
+    if since_id:
+      parameters['since_id'] = since_id
+    if max_id:
+      try:
+        parameters['max_id'] = long(max_id)
+      except:
+        raise TwitterError("max_id must be an integer")
 
     if user:
       url = '%s/favorites/%s.json' % (self.base_url, user)
